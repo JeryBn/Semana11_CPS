@@ -1,37 +1,71 @@
+
 package com.tecsup.petclinic.services;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.tecsup.petclinic.entities.Specialty;
+import com.tecsup.petclinic.repositories.SpecialtyRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
-@Slf4j
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class SpecialtyServiceTest {
 
-	//@Autowired
-   //	private OwnerService ownerService;
+	@Mock
+	private SpecialtyRepository specialtyRepository;
 
-	/**
-	 * 
-	 */
-	/*
-	@Test
-	public void testFindOwnerById() {
+	@InjectMocks
+	private SpecialtyServiceImpl specialtyService;
 
-		long ID = 1;
-		String NAME = "Jaime";
-		Owner owner = null;
-		
-		try {
-			
-			owner = ownerService.findById(ID);
-			
-		} catch (OwnertNotFoundException e) {
-			fail(e.getMessage());
-		}
-		log.info("" + owner);
+	private Specialty specialty;
 
-		assertEquals(NAME, owner.getName());
-
+	@BeforeEach
+	void setUp() {
+		specialty = new Specialty(
+				1, "radiology", "Farewell", 8, 18
+		);
 	}
-	*/
+
+	@Test
+	void testFindByOffice() {
+		when(specialtyRepository.findByOffice("Farewell"))
+				.thenReturn(List.of(specialty));
+
+		List<Specialty> resultado =
+				specialtyService.findByOffice("Farewell");
+
+		assertEquals(1, resultado.size());
+		assertEquals("Farewell", resultado.get(0).getOffice());
+		assertEquals("radiology", resultado.get(0).getName());
+
+		verify(specialtyRepository).findByOffice("Farewell");
+	}
+
+	@Test
+	void testFindByName() {
+		when(specialtyRepository.findByName("radiology"))
+				.thenReturn(List.of(specialty));
+
+		List<Specialty> resultado =
+				specialtyService.findByName("radiology");
+
+		assertEquals(1, resultado.size());
+		assertEquals("radiology", resultado.get(0).getName());
+
+		verify(specialtyRepository).findByName("radiology");
+	}
+
+	@Test
+	void testDeleteSpecialty() {
+		specialtyService.deleteSpecialty(1);
+
+		verify(specialtyRepository, times(1)).deleteById(1);
+	}
 }
