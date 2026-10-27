@@ -20,3 +20,13 @@ En Windows, desde la carpeta del proyecto:
 ```
 
 La revision, integracion y documentacion de conflictos corresponden al trabajo del equipo.
+
+### Aportes del equipo
+
+- Integrante A, Jery Becerra: creacion, actualizacion y busqueda por ID.
+- Integrante B, Michael Fernandez: busqueda por consultorio, busqueda por nombre y eliminacion.
+- Integrante C, Pamela Meneses: especialidad inexistente y validaciones de horario.
+
+### Conflictos resueltos en la integracion
+
+Las ramas agregaron versiones distintas de la entidad, repositorio, servicio y pruebas de especialidades. Se conservaron las operaciones y validaciones de los tres integrantes en un servicio comun; las pruebas se separaron por integrante para conservar todos los casos. Tambien se unifico la excepcion de especialidad no encontrada.
