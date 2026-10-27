@@ -2,6 +2,7 @@ package com.tecsup.petclinic.services;
 
 import com.tecsup.petclinic.entities.Specialty;
 import com.tecsup.petclinic.exceptions.SpecialtyNotFoundException;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,11 +17,16 @@ class SpecialtyServiceDatabaseTest {
     @Autowired
     private SpecialtyService specialtyService;
 
+    @Autowired
+    private EntityManager entityManager;
+
     @Test
     void testCreateSpecialty() throws SpecialtyNotFoundException {
         Specialty specialty = new Specialty(null, "Cirugia", "Consultorio 1", 8, 17);
 
         Specialty created = specialtyService.create(specialty);
+        entityManager.flush();
+        entityManager.clear();
         Specialty found = specialtyService.findById(created.getId());
 
         assertNotNull(created.getId());
@@ -36,6 +42,8 @@ class SpecialtyServiceDatabaseTest {
         created.setOffice("Consultorio 2");
 
         Specialty updated = specialtyService.update(created);
+        entityManager.flush();
+        entityManager.clear();
         Specialty found = specialtyService.findById(updated.getId());
 
         assertEquals("Cardiologia", found.getName());
@@ -47,9 +55,12 @@ class SpecialtyServiceDatabaseTest {
         Specialty created = specialtyService.create(
                 new Specialty(null, "Radiologia", "Consultorio 3", 8, 16));
 
+        entityManager.flush();
+        entityManager.clear();
         Specialty found = specialtyService.findById(created.getId());
 
         assertEquals(created.getId(), found.getId());
         assertEquals("Radiologia", found.getName());
     }
 }
+
