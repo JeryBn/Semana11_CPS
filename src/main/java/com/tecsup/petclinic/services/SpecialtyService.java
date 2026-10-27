@@ -4,6 +4,7 @@ import com.tecsup.petclinic.entities.Specialty;
 import com.tecsup.petclinic.exceptions.SpecialtyNotFoundException;
 import com.tecsup.petclinic.repositories.SpecialtyRepository;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class SpecialtyService {
@@ -11,6 +12,18 @@ public class SpecialtyService {
 
     public SpecialtyService(SpecialtyRepository specialtyRepository) {
         this.specialtyRepository = specialtyRepository;
+    }
+
+    public List<Specialty> findByOffice(String office) {
+        return specialtyRepository.findByOffice(office);
+    }
+
+    public List<Specialty> findByName(String name) {
+        return specialtyRepository.findByName(name);
+    }
+
+    public void deleteSpecialty(Integer id) {
+        specialtyRepository.deleteById(id);
     }
 
     public Specialty create(Specialty specialty) {
@@ -26,3 +39,4 @@ public class SpecialtyService {
                 .orElseThrow(() -> new SpecialtyNotFoundException("Specialty not found: " + id));
     }
 }
+
